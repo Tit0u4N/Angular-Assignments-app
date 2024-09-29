@@ -1,4 +1,16 @@
-<div>
-  <h1>Assignment</h1>
-  <p>Assignment works!</p>
+<div (click)="toggleAssignment()" class="w-full p-2 rounded-xl cursor-pointer"
+  [ngClass]="{'shadow-standard': isDone(), 'shadow-todo' : isTodo(), 'shadow-delayed' : isDelayed()}"
+>
+  <div class="w-full flex">
+    <div>
+
+    </div>
+    <div>
+      <h3>{{ data.title }}</h3>
+      <p>Assignment works!</p>
+    </div>
+  </div>
+  <div class="w-full h-1.5 flex justify-end relative pe-4">
+    <p class="bg-white h-fit px-1">{{ data.date }}</p>
+  </div>
 </div>

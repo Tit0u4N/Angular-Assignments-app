@@ -1,15 +1,35 @@
+<app-header></app-header>
 <main class="max-w-lg m-auto">
   <h1 class="text-5xl text-center my-10">{{title}}</h1>
 
   <div>
     <h2 class="text-xl">All assignment</h2>
 
-    <div class="flex flex-col">
-      @for (i of assignments; track assignments) {
-        <app-assignment [index]="i"></app-assignment>
+    <app-assigment-form [assignment]="assignments"/>
+    <div class="flex flex-col gap-4">
+      @if (getDelayedAssignments().length > 0) {
+        <h3>Delayed assignments</h3>
+        @for (assignment of getDelayedAssignments(); track assignment) {
+          <app-assignment [data]="assignment"></app-assignment>
+        }
+      }
+
+      @if (getTodoAssignments().length > 0) {
+        <h3>Todo assignments</h3>
+        @for (assignment of getTodoAssignments(); track assignment) {
+          <app-assignment [data]="assignment"></app-assignment>
+        }
+      }
+
+      @if (getDoneAssignments().length > 0) {
+        <h3>Done assignments</h3>
+        @for (assignment of getDoneAssignments(); track assignment) {
+          <app-assignment [data]="assignment"></app-assignment>
+        }
       }
     </div>
   </div>
+
 </main>
 
 <router-outlet />
