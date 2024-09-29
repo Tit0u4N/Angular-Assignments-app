@@ -2,7 +2,6 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 
-
 @Component({
   selector: 'app-date-picker',
   standalone: true,
