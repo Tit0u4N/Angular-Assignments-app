@@ -11,7 +11,6 @@ import {DatePickerComponent} from "../date-picker/date-picker.component";
     DatePickerComponent
   ],
   templateUrl: './assigment-form.component.html',
-  styleUrl: './assigment-form.component.scss'
 })
 export class AssigmentFormComponent {
   @Input() assignment : Assignment[] = [];

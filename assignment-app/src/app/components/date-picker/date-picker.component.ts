@@ -12,7 +12,6 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

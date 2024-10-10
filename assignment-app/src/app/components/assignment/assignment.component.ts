@@ -1,5 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgClass} from "@angular/common";
+import {
+  MatExpansionPanel,
+  MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from "@angular/material/expansion";
+import {MatButton} from "@angular/material/button";
 
 export type Assignment = {
   title: string,
@@ -11,10 +18,14 @@ export type Assignment = {
   selector: 'app-assignment',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
+    MatExpansionPanelHeader,
+    MatExpansionPanelDescription,
+    MatButton,
   ],
   templateUrl: './assignment.component.html',
-  styleUrl: './assignment.component.scss'
 })
 export class AssignmentComponent implements OnInit {
   @Input() data : Assignment = {
