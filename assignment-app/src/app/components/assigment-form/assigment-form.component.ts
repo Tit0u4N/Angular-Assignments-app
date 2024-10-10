@@ -19,33 +19,30 @@ export class AssigmentFormComponent {
   title = "";
   date = "";
 
-  setDate(date : string) {
-    console.log(date + " from form component");
-    this.date = date;
-  }
-
   verifyDate() : boolean {
-    return this.date === "";
+    return this.date !== "";
   }
 
   verifyTitle() : boolean {
-    return this.title === "";
+    return this.title !== "";
   }
 
   verifyForm() : boolean {
-    return this.verifyDate() || this.verifyTitle();
+    return this.verifyDate() && this.verifyTitle();
   }
 
   onSubmit() {
+    console.log(this.title, " date ", this.date);
     if (this.verifyForm()) {
-      return;
+      this.assignment.push({
+        title: this.title,
+        status: "todo",
+        date: this.date
+      });
+      this.resetForm();
+    } else {
+      alert("Please fill the form correctly");
     }
-    this.assignment.push({
-      title: this.title,
-      status: "todo",
-      date: this.date
-    });
-    this.resetForm();
   }
 
   resetForm() {

@@ -5,19 +5,20 @@
       id="datepicker"
       type="text"
       readonly
-      [(ngModel)]="datepickerValue"
-      class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
+      class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium cursor-pointer"
       placeholder="Select date"
+      [ngModel]="value"
       (click)="showDatepicker = !showDatepicker">
 
-    <div class="absolute top-0 right-0 px-3 py-2 z-50">
+    <div class="absolute top-0 right-0 px-3 py-2 z-50"  (click)="showDatepicker = !showDatepicker">
       <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
       </svg>
     </div>
 
-    <div *ngIf="showDatepicker" class="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0"
+    @if (showDatepicker) {
+    <div class="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0"
          style="width: 17rem">
 
       <div class="flex justify-between items-center mb-2">
@@ -65,21 +66,25 @@
       </div>
 
       <div class="-mx-1 grid grid-cols-7">
-        <div *ngFor="let blankday of blankdays">
+        @for (blankDay of blankDays; track blankDay) {
           <div class="text-center border p-1 border-transparent text-sm"></div>
+        }
+        @for (day of no_of_days; track day) {
+        <div class="grid grid-cols-7">
+            <div class="px-1 mb-1">
+              <button type="button"
+                (click)="setValueAndClose(day)"
+                      class="self-center text-center text-sm rounded-full leading-loose transition ease-in-out duration-100"
+                      [ngClass]="{'bg-blue-500 text-white': isToday(day), 'text-gray-700 hover:bg-blue-200': !isToday(day) }">
+                {{ day }}
+              </button>
+            </div>
         </div>
-        <div *ngFor="let date of no_of_days" class="grid grid-cols-7">
-          <div class="px-1 mb-1">
-            <button (click)="getDateValue(date)"
-                    class="self-center text-center text-sm rounded-full leading-loose transition ease-in-out duration-100"
-                    [ngClass]="{'bg-blue-500 text-white': isToday(date), 'text-gray-700 hover:bg-blue-200': !isToday(date) }">
-              {{ date }}
-            </button>
-          </div>
-        </div>
-      </div>
+        }
     </div>
 
+    </div>
+    }
   </div>
 </div>
 
