@@ -1,35 +1,46 @@
-<app-header></app-header>
-<main class="max-w-lg m-auto">
-  <h1 class="text-5xl text-center my-10">{{title}}</h1>
-
-  <div>
-    <h2 class="text-xl">All assignment</h2>
-
-    <app-assigment-form [assignment]="assignments"/>
-    <div class="flex flex-col gap-4">
-      @if (getDelayedAssignments().length > 0) {
-        <h3>Delayed assignments</h3>
-        @for (assignment of getDelayedAssignments(); track assignment) {
-          <app-assignment [data]="assignment"></app-assignment>
-        }
-      }
-
-      @if (getTodoAssignments().length > 0) {
-        <h3>Todo assignments</h3>
-        @for (assignment of getTodoAssignments(); track assignment) {
-          <app-assignment [data]="assignment"></app-assignment>
-        }
-      }
-
-      @if (getDoneAssignments().length > 0) {
-        <h3>Done assignments</h3>
-        @for (assignment of getDoneAssignments(); track assignment) {
-          <app-assignment [data]="assignment"></app-assignment>
-        }
-      }
-    </div>
+<mat-toolbar class="flex gap-2 items-center !bg-slate-200">
+  <div class="w-1/3">
+    <button mat-icon-button
+            (click)="toggleNav()"
+            class="example-icon"
+            aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>home</mat-icon>
+    </button>
   </div>
+  <div class="w-1/3 text-center">
+    <h1 class="!text-4xl">{{ title }}</h1>
+  </div>
+  <div class="w-1/3">
 
-</main>
+  </div>
+</mat-toolbar>
+<mat-drawer-container class="bg-none h-full">
+  <mat-drawer mode="side" [opened]="navOpen" class="!shadow-basic">
+    <nav class="flex flex-col gap-4 p-4">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+    </nav>
+  </mat-drawer>
+  <mat-drawer-content>
+    <mat-drawer-container>
+      <mat-drawer mode="push">
+        <app-assigment-form [assignment]="assignments"/>
+      </mat-drawer>
+      <mat-drawer-content class="p-4">
+        <h2 class="text-xl">All assignment</h2>
+        <div class="flex flex-col gap-4">
+          <app-assignment-list [assignments]="getDelayedAssignments()" title="Delayed assignments"></app-assignment-list>
+          <app-assignment-list [assignments]="getTodoAssignments()" title="Todo assignments"></app-assignment-list>
+          <app-assignment-list [assignments]="getDoneAssignments()" title="Done assignments"></app-assignment-list>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </mat-drawer-content>
+</mat-drawer-container>
 
-<router-outlet />
+
+<router-outlet/>
