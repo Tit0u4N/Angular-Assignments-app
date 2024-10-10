@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgClass} from "@angular/common";
 
 export type Assignment = {
@@ -16,7 +16,7 @@ export type Assignment = {
   templateUrl: './assignment.component.html',
   styleUrl: './assignment.component.scss'
 })
-export class AssignmentComponent {
+export class AssignmentComponent implements OnInit {
   @Input() data : Assignment = {
     title: "DEFAULT TITLE",
     status: "todo",

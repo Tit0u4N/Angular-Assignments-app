@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {Component, EventEmitter, forwardRef, OnInit, Output} from '@angular/core';
+import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ValueChangeEvent} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 
 @Component({
@@ -12,31 +12,35 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.scss'
+  styleUrl: './date-picker.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true
+    }
+  ]
 })
-export class DatePickerComponent {
+export class DatePickerComponent implements OnInit, ControlValueAccessor {
+  value: string = "";
+  onChange: any = () => {};
+  onTouched: any = () => {};
+
+
   MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   showDatepicker: boolean = false;
-  datepickerValue: any = '';
   month: any = '';
   year: any = '';
   no_of_days: any = [];
-  blankdays: any = [];
-  days: any = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  @Output() dateValueEvent = new EventEmitter<string>();
+  blankDays: any = [];
 
   ngOnInit(): void {
-    this.initDate();
-  }
-
-  initDate() {
     let today = new Date();
     this.month = today.getMonth();
     this.year = today.getFullYear();
-    this.datepickerValue = new Date(this.year, this.month, today.getDate()).toDateString();
-    this.getNoOfDays()
+    this.writeValue(this.value);
+    this.getNoOfDays();
   }
 
   isToday(date : any) {
@@ -45,12 +49,12 @@ export class DatePickerComponent {
     return today.toDateString() === d.toDateString();
   }
 
-  getDateValue(date : any) {
-    let selectedDate = new Date(this.year, this.month, date);
-    this.datepickerValue = selectedDate.toDateString();
-    console.log(selectedDate);
+  setValueAndClose(day : number) {
+    let selectedDate = new Date(this.year, this.month, day);
+    this.writeValue(selectedDate.toDateString());
     this.showDatepicker = false;
-    this.dateValueEvent.emit(this.datepickerValue);
+    this.onChange(this.value);
+    console.log(this.value);
   }
 
   getNoOfDays() {
@@ -59,9 +63,9 @@ export class DatePickerComponent {
 
     // find where to start calendar day of week
     let dayOfWeek = new Date(this.year, this.month).getDay();
-    let blankdaysArray = [];
+    let blankDaysArray = [];
     for (i = 1; i <= dayOfWeek; i++) {
-      blankdaysArray.push(i);
+      blankDaysArray.push(i);
     }
 
     let daysArray = [];
@@ -69,7 +73,19 @@ export class DatePickerComponent {
       daysArray.push(i);
     }
 
-    this.blankdays = blankdaysArray;
+    this.blankDays = blankDaysArray;
     this.no_of_days = daysArray;
+  }
+
+  // ControlValueAccessor methods
+
+  writeValue(value: string): void {
+    this.value = value;
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 }
