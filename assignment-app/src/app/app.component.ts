@@ -52,6 +52,10 @@ export class AppComponent {
     });
   }
 
+  deleteAssignment(assignment: Assignment) {
+    this.assignments = this.assignments.filter(a => a !== assignment);
+  }
+
   getTodoAssignments() {
     return this.assignments.filter(a => a.status === "todo");
   }

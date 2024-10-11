@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {
   MatExpansionPanel,
@@ -6,8 +6,9 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import { formatDate } from '../../../shared/utils';
+import {MatIcon} from "@angular/material/icon";
 
 export type Assignment = {
   title: string,
@@ -26,6 +27,8 @@ export type Assignment = {
     MatExpansionPanelHeader,
     MatExpansionPanelDescription,
     MatButton,
+    MatIcon,
+    MatIconButton,
   ],
   templateUrl: './assignment.component.html',
 })
@@ -36,6 +39,15 @@ export class AssignmentComponent {
     date: new Date("2021-01-01"),
     description: "Description"
   }
+  @Output() onDeletedEventEmitter : EventEmitter<Assignment> = new EventEmitter<Assignment>();
+
+  get stateToToggle(){
+    if (this.isDone()) {
+      return "Todo"
+    } else {
+      return  "Done"
+    }
+  }
 
   toggleAssignment(force : boolean | undefined = undefined) {
     if (force === undefined) {
@@ -43,6 +55,10 @@ export class AssignmentComponent {
     } else {
       this.data.status = force ? "done" : "todo";
     }
+  }
+
+  deleteAssignment() {
+    this.onDeletedEventEmitter.emit(this.data);
   }
 
   isDelayed() {

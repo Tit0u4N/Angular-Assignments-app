@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Assignment, AssignmentComponent} from "../assignment/assignment.component";
 
 @Component({
@@ -12,4 +12,10 @@ import {Assignment, AssignmentComponent} from "../assignment/assignment.componen
 export class AssignmentListComponent {
   @Input() assignments: Assignment[] = [];
   @Input() title: string = "Assignments";
+
+  @Output() onDeletedEventEmitter : EventEmitter<Assignment> = new EventEmitter<Assignment>();
+
+  deleteAssignment(assignment: Assignment) {
+    this.onDeletedEventEmitter.emit(assignment);
+  }
 }
