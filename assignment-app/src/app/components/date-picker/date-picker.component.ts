@@ -1,30 +1,22 @@
-import {Component, EventEmitter, forwardRef, OnInit, Output} from '@angular/core';
-import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ValueChangeEvent} from "@angular/forms";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {formatDate} from "../../../shared/utils";
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
   imports: [
-    FormsModule,
     NgForOf,
     NgClass,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './date-picker.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatePickerComponent),
-      multi: true
-    }
-  ]
 })
-export class DatePickerComponent implements OnInit, ControlValueAccessor {
-  value: string = "";
-  onChange: any = () => {};
-  onTouched: any = () => {};
-
+export class DatePickerComponent implements OnInit{
+  @Output() dateEmitter = new EventEmitter<Date>();
+  value: Date = new Date();
 
   MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -38,8 +30,8 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
     let today = new Date();
     this.month = today.getMonth();
     this.year = today.getFullYear();
-    this.writeValue(this.value);
     this.getNoOfDays();
+    this.dateEmitter.emit(this.value);
   }
 
   isToday(date : any) {
@@ -49,11 +41,9 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   setValueAndClose(day : number) {
-    let selectedDate = new Date(this.year, this.month, day);
-    this.writeValue(selectedDate.toDateString());
+    this.value = new Date(this.year, this.month, day);
+    this.dateEmitter.emit(this.value);
     this.showDatepicker = false;
-    this.onChange(this.value);
-    console.log(this.value);
   }
 
   getNoOfDays() {
@@ -76,15 +66,5 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
     this.no_of_days = daysArray;
   }
 
-  // ControlValueAccessor methods
-
-  writeValue(value: string): void {
-    this.value = value;
-  }
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+  protected readonly formatDate = formatDate;
 }

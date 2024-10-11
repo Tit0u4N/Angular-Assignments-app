@@ -7,11 +7,13 @@ import {
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
 import {MatButton} from "@angular/material/button";
+import { formatDate } from '../../../shared/utils';
 
 export type Assignment = {
   title: string,
   status: 'done' | 'todo' | 'delayed',
-  date : string
+  date : Date,
+  description? : string
 }
 
 @Component({
@@ -27,17 +29,12 @@ export type Assignment = {
   ],
   templateUrl: './assignment.component.html',
 })
-export class AssignmentComponent implements OnInit {
+export class AssignmentComponent {
   @Input() data : Assignment = {
     title: "DEFAULT TITLE",
     status: "todo",
-    date: "2021-01-01"
-  }
-
-  ngOnInit() {
-    if (this.isTodo() && new Date(this.data.date) < new Date()) {
-      this.data.status = "delayed"
-    }
+    date: new Date("2021-01-01"),
+    description: "Description"
   }
 
   toggleAssignment(force : boolean | undefined = undefined) {
@@ -59,4 +56,6 @@ export class AssignmentComponent implements OnInit {
   isTodo() {
     return this.data.status === "todo";
   }
+
+  protected readonly formatDate = formatDate;
 }

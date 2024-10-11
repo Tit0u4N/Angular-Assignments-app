@@ -20,25 +20,21 @@
 <mat-drawer-container class="bg-none h-full">
   <mat-drawer mode="side" [opened]="navOpen" class="!shadow-basic">
     <nav class="flex flex-col gap-4 p-4">
+      <button mat-raised-button (click)="openNewAssignmentFormSheet()">
+        New assignment
+      </button>
       <a routerLink="/home" routerLinkActive="active">Home</a>
       <a routerLink="/about" routerLinkActive="active">About</a>
       <a routerLink="/contact" routerLinkActive="active">Contact</a>
     </nav>
   </mat-drawer>
-  <mat-drawer-content>
-    <mat-drawer-container>
-      <mat-drawer mode="push">
-        <app-assigment-form [assignment]="assignments"/>
-      </mat-drawer>
-      <mat-drawer-content class="p-4">
-        <h2 class="text-xl">All assignment</h2>
-        <div class="flex flex-col gap-4">
-          <app-assignment-list [assignments]="getDelayedAssignments()" title="Delayed assignments"></app-assignment-list>
-          <app-assignment-list [assignments]="getTodoAssignments()" title="Todo assignments"></app-assignment-list>
-          <app-assignment-list [assignments]="getDoneAssignments()" title="Done assignments"></app-assignment-list>
-        </div>
-      </mat-drawer-content>
-    </mat-drawer-container>
+  <mat-drawer-content class="p-4">
+    <h2 class="text-xl">All assignment</h2>
+    <div class="flex flex-col gap-4">
+      <app-assignment-list [assignments]="getDelayedAssignments()" title="Delayed assignments"></app-assignment-list>
+      <app-assignment-list [assignments]="getTodoAssignments()" title="Todo assignments"></app-assignment-list>
+      <app-assignment-list [assignments]="getDoneAssignments()" title="Done assignments"></app-assignment-list>
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>
 
