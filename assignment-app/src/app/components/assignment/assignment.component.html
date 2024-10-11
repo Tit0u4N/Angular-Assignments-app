@@ -3,10 +3,17 @@
     <mat-panel-title >
       <h4 class="text-xl" [ngClass]="{'text-red-500' : isDelayed(), 'text-sky-400' : isTodo()}">{{ data.title }}</h4>
     </mat-panel-title>
-    <mat-panel-description>{{ data.date }}</mat-panel-description>
+    <mat-panel-description>{{ formatDate(data.date) }}</mat-panel-description>
   </mat-expansion-panel-header>
   <div>
-    <button mat-flat-button (click)="toggleAssignment()">
+    <div>
+      @if (data.description) {
+        <p>
+          {{ data.description }}
+        </p>
+      }
+    </div>
+    <button class="ml-auto" mat-flat-button (click)="toggleAssignment()">
       Toggle
     </button>
   </div>
