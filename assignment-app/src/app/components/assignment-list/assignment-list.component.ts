@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Assignment, AssignmentComponent} from "../assignment/assignment.component";
+import {Component, Input, OnInit} from '@angular/core';
+import { AssignmentComponent} from "../assignment/assignment.component";
+import {Assignment, AssignmentService} from "../../../shared/services/assignment.service";
 
 @Component({
   selector: 'app-assignment-list',
@@ -9,13 +10,16 @@ import {Assignment, AssignmentComponent} from "../assignment/assignment.componen
     ],
   templateUrl: './assignment-list.component.html',
 })
-export class AssignmentListComponent {
-  @Input() assignments: Assignment[] = [];
+export class AssignmentListComponent implements OnInit{
   @Input() title: string = "Assignments";
+  @Input() assignmentStatus: 'done' | 'todo' | 'delayed' = 'todo';
+  assignments: Assignment[] = [];
 
-  @Output() onDeletedEventEmitter : EventEmitter<Assignment> = new EventEmitter<Assignment>();
+  constructor(private assignmentService: AssignmentService) {}
 
-  deleteAssignment(assignment: Assignment) {
-    this.onDeletedEventEmitter.emit(assignment);
+  ngOnInit() {
+    this.assignmentService.assignments$.subscribe(() => {
+      this.assignments = this.assignmentService.getAssignmentByStatus(this.assignmentStatus);
+    });
   }
 }

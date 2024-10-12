@@ -31,9 +31,9 @@
   <mat-drawer-content class="p-4">
     <h2 class="text-2xl mt-2">All assignment</h2>
     <div class="flex flex-col gap-4">
-      <app-assignment-list (onDeletedEventEmitter)="deleteAssignment($event)" [assignments]="getDelayedAssignments()" title="Delayed assignments"></app-assignment-list>
-      <app-assignment-list (onDeletedEventEmitter)="deleteAssignment($event)" [assignments]="getTodoAssignments()" title="Todo assignments"></app-assignment-list>
-      <app-assignment-list (onDeletedEventEmitter)="deleteAssignment($event)" [assignments]="getDoneAssignments()" title="Done assignments"></app-assignment-list>
+      <app-assignment-list assignmentStatus="delayed" title="Delayed assignments"></app-assignment-list>
+      <app-assignment-list assignmentStatus="todo" title="Todo assignments"></app-assignment-list>
+      <app-assignment-list assignmentStatus="done" title="Done assignments"></app-assignment-list>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>

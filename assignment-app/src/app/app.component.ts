@@ -1,7 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {Assignment, AssignmentComponent} from "./components/assignment/assignment.component";
-import {assignmentMock} from "../shared/mocks";
+import {AssignmentComponent} from "./components/assignment/assignment.component";
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -39,32 +38,13 @@ export class AppComponent {
 
   navOpen: boolean = false;
   title = 'assignment-app';
-  assignments: Assignment[] = assignmentMock;
+
 
   toggleNav() {
     this.navOpen = !this.navOpen;
   }
 
   openNewAssignmentFormSheet() {
-    const bottomSheetRef = this._bottomSheet.open(AssignmentFormComponent);
-    bottomSheetRef.instance.assignmentEventEmitter.subscribe((assignment: Assignment) => {
-      this.assignments.push(assignment);
-    });
-  }
-
-  deleteAssignment(assignment: Assignment) {
-    this.assignments = this.assignments.filter(a => a !== assignment);
-  }
-
-  getTodoAssignments() {
-    return this.assignments.filter(a => a.status === "todo");
-  }
-
-  getDoneAssignments() {
-    return this.assignments.filter(a => a.status === "done");
-  }
-
-  getDelayedAssignments() {
-    return this.assignments.filter(a => a.status === "delayed").sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    this._bottomSheet.open(AssignmentFormComponent);
   }
 }
