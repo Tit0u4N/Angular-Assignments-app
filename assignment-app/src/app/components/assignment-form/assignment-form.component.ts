@@ -1,10 +1,8 @@
-import {Component, EventEmitter, inject, Output} from '@angular/core';
-import {Assignment} from "../assignment/assignment.component";
+import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {DatePickerComponent} from "../date-picker/date-picker.component";
 import {MatBottomSheetRef} from "@angular/material/bottom-sheet";
-import {formatDate} from "../../../shared/utils";
-import {D} from "@angular/cdk/keycodes";
+import {AssignmentService} from "../../../shared/services/assignment.service";
 
 @Component({
   selector: 'app-assignment-form',
@@ -16,13 +14,14 @@ import {D} from "@angular/cdk/keycodes";
   templateUrl: './assignment-form.component.html',
 })
 export class AssignmentFormComponent {
-  @Output() assignmentEventEmitter : EventEmitter<Assignment> = new EventEmitter<Assignment>();
   private _bottomSheetRef =
     inject<MatBottomSheetRef<AssignmentFormComponent>>(MatBottomSheetRef);
 
   title = "";
   date: Date = new Date()
   description = "";
+
+  constructor(private assignmentService: AssignmentService) {}
 
   receiveDate($event: Date) {
     this.date = $event;
@@ -49,7 +48,7 @@ export class AssignmentFormComponent {
   onSubmit() {
     if (this.verifyForm()) {
 
-      this.assignmentEventEmitter.emit({
+      this.assignmentService.addAssignment({
         title: this.title,
         status: "todo",
         date: this.date,

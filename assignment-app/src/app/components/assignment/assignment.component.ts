@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {
   MatExpansionPanel,
@@ -9,13 +9,7 @@ import {
 import {MatButton, MatIconButton} from "@angular/material/button";
 import { formatDate } from '../../../shared/utils';
 import {MatIcon} from "@angular/material/icon";
-
-export type Assignment = {
-  title: string,
-  status: 'done' | 'todo' | 'delayed',
-  date : Date,
-  description? : string
-}
+import {Assignment, AssignmentService, AssignmentStatus} from "../../../shared/services/assignment.service";
 
 @Component({
   selector: 'app-assignment',
@@ -33,32 +27,37 @@ export type Assignment = {
   templateUrl: './assignment.component.html',
 })
 export class AssignmentComponent {
+  protected readonly formatDate = formatDate;
   @Input() data : Assignment = {
+    id: -1,
     title: "DEFAULT TITLE",
     status: "todo",
     date: new Date("2021-01-01"),
     description: "Description"
   }
-  @Output() onDeletedEventEmitter : EventEmitter<Assignment> = new EventEmitter<Assignment>();
+
+  constructor(private assignmentService: AssignmentService) {}
 
   get stateToToggle(){
     if (this.isDone()) {
       return "Todo"
     } else {
-      return  "Done"
-    }
-  }
-
-  toggleAssignment(force : boolean | undefined = undefined) {
-    if (force === undefined) {
-      this.data.status = this.data.status === "done" ? "todo" : "done";
-    } else {
-      this.data.status = force ? "done" : "todo";
+      return "Done"
     }
   }
 
   deleteAssignment() {
-    this.onDeletedEventEmitter.emit(this.data);
+    this.assignmentService.removeAssignment(this.data);
+  }
+
+  toggleAssignment(force? : boolean) {
+    let nextStatus : AssignmentStatus;
+    if (force === undefined) {
+      nextStatus = this.isDone() ? "todo" : "done";
+    } else {
+      nextStatus = force ? "done" : "todo";
+    }
+    this.assignmentService.setStatus(this.data.id, nextStatus);
   }
 
   isDelayed() {
@@ -72,6 +71,4 @@ export class AssignmentComponent {
   isTodo() {
     return this.data.status === "todo";
   }
-
-  protected readonly formatDate = formatDate;
 }
