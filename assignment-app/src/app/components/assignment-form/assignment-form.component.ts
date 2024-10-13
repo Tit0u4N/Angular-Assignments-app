@@ -21,27 +21,28 @@ export class AssignmentFormComponent {
   date: Date = new Date()
   description = "";
 
-  constructor(private assignmentService: AssignmentService) {}
+  constructor(private assignmentService: AssignmentService) {
+  }
 
   receiveDate($event: Date) {
     this.date = $event;
   }
 
-  verifyDate() : boolean {
+  verifyDate(): boolean {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
     return this.date > yesterday
   }
 
-  verifyTitle() : boolean {
+  verifyTitle(): boolean {
     return this.title !== "";
   }
 
-  verifyDescription() : boolean {
+  verifyDescription(): boolean {
     return this.description !== "";
   }
 
-  verifyForm() : boolean {
+  verifyForm(): boolean {
     return this.verifyDate() && this.verifyTitle();
   }
 

@@ -39,7 +39,6 @@ export class AppComponent {
   navOpen: boolean = false;
   title = 'assignment-app';
 
-
   toggleNav() {
     this.navOpen = !this.navOpen;
   }
