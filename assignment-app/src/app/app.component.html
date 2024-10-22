@@ -1,12 +1,13 @@
 <mat-toolbar class="flex gap-2 items-center !bg-slate-200">
   <div class="w-1/3">
-    <button mat-icon-button
-            (click)="toggleNav()"
-            class="example-icon"
-            aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button mat-icon-button>
+    @if (authService.isAuthenticated) {
+      <button mat-icon-button
+              (click)="toggleNav()"
+              aria-label="menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+    <button mat-icon-button routerLink="/">
       <mat-icon>home</mat-icon>
     </button>
   </div>
@@ -20,11 +21,16 @@
 <mat-drawer-container class="bg-none h-full">
   <mat-drawer mode="side" [opened]="navOpen" class="!shadow-basic">
     <nav class="flex flex-col gap-4 p-4">
-      <button mat-raised-button (click)="openNewAssignmentFormSheet()">
-        New assignment
-      </button>
-      <a routerLink="/" routerLinkActive="active">Home</a>
-      <a routerLink="/new-assignment" >Add Assignement page</a>
+      @if (authService.isAuthenticated) {
+        <a routerLink="/" routerLinkActive="active">Home</a>
+        <a routerLink="/new-assignment" >Add Assignement page</a>
+        <button mat-raised-button (click)="openNewAssignmentFormSheet()">
+          New assignment
+        </button>
+        <button mat-raised-button (click)="authService.logout()">
+          Logout
+        </button>
+      }
     </nav>
   </mat-drawer>
   <mat-drawer-content class="p-4">

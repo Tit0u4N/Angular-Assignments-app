@@ -9,6 +9,7 @@ import {MatAccordion} from "@angular/material/expansion";
 import {AssignmentListComponent} from "./components/assignment-list/assignment-list.component";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AssignmentFormComponent} from "./components/assignment-form/assignment-form.component";
+import {AuthService} from "../shared/services/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,9 @@ import {AssignmentFormComponent} from "./components/assignment-form/assignment-f
 })
 export class AppComponent {
   private _bottomSheet = inject(MatBottomSheet);
+
+  constructor(public authService: AuthService) {
+  }
 
   navOpen: boolean = false;
   title = 'assignment-app';
