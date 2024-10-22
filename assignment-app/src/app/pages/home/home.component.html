@@ -1,3 +1,8 @@
 <div>
-  <h1>HOME</h1>
+  <h1 class="text-4xl">Welcome to the Assignment App</h1>
+  <p class="text-lg">This is a simple app to manage assignments</p>
+  @if (!authService.isAuthenticated) {
+    <p class="text-lg">Please login to continue</p>
+    <button mat-raised-button routerLink="/login">Login</button>
+  }
 </div>

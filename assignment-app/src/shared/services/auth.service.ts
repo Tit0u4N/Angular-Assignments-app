@@ -11,22 +11,25 @@ export class AuthService {
   async login(login: string, password: string): Promise<string> {
     this._isAuthenticated = true;
 
-    return "success";
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('token');
+      }, 1000);
+    });
   }
 
-  logout() {
-    this._isAuthenticated = false;
+  async logout() : Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._isAuthenticated = false;
+      resolve();
+    });
   }
 
-  get isAuthenticated() {
+  get isAuthenticated(): boolean {
     return this._isAuthenticated;
   }
 
-  async isAdmin() : Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this._isAuthenticated);
-      }, 500);
-    });
+  get isAdmin(): boolean {
+    return this._isAuthenticated;
   }
 }
