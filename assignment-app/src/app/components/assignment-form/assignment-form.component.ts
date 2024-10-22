@@ -14,14 +14,18 @@ import {AssignmentService} from "../../../shared/services/assignment.service";
   templateUrl: './assignment-form.component.html',
 })
 export class AssignmentFormComponent {
-  private _bottomSheetRef =
-    inject<MatBottomSheetRef<AssignmentFormComponent>>(MatBottomSheetRef);
+  private _bottomSheetRef?;
 
   title = "";
   date: Date = new Date()
   description = "";
 
   constructor(private assignmentService: AssignmentService) {
+    try {
+      this._bottomSheetRef = inject<MatBottomSheetRef<AssignmentFormComponent>>(MatBottomSheetRef);
+    } catch (e) {
+
+    }
   }
 
   receiveDate($event: Date) {
@@ -57,7 +61,7 @@ export class AssignmentFormComponent {
       });
 
       this.resetForm();
-      this._bottomSheetRef.dismiss();
+      this._bottomSheetRef?.dismiss();
     } else {
       alert("Please fill the form correctly");
     }

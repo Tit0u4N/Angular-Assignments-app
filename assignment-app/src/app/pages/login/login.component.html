@@ -1,0 +1,25 @@
+<div class="size-full flex flex-col items-center justify-center">
+
+  <form class="flex flex-col items-center gap-6 pb-10" (ngSubmit)="onLogin()">
+    <h2 class="text-2xl font-bold">Want more assignment ?</h2>
+
+    <input [(ngModel)]="login"
+           name="login"
+           type="text"
+           placeholder="Assigment title"
+           class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium cursor-pointer"
+    >
+    <input [(ngModel)]="password"
+           name="password"
+           type="password"
+           placeholder="Assigment title"
+           class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium cursor-pointer"
+    >
+
+    <button type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Login
+    </button>
+  </form>
+
+</div>
