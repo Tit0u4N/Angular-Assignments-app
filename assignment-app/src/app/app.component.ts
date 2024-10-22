@@ -10,6 +10,7 @@ import {AssignmentListComponent} from "./components/assignment-list/assignment-l
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AssignmentFormComponent} from "./components/assignment-form/assignment-form.component";
 import {AuthService} from "../shared/services/auth.service";
+import {LoaderComponent} from "./components/loader/loader.component";
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,8 @@ import {AuthService} from "../shared/services/auth.service";
     RouterLinkActive,
     MatDrawer,
     AssignmentListComponent,
-    MatButton
+    MatButton,
+    LoaderComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
