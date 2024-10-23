@@ -1,4 +1,9 @@
 <h2 class="text-2xl mt-2">All assignment</h2>
+<div class="relative h-0 w-full flex items-end">
+  <button mat-fab (click)="openNewAssignmentFormSheet()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 <div class="flex flex-col gap-4">
   <app-assignment-list assignmentStatus="delayed" title="Delayed assignments"></app-assignment-list>
   <app-assignment-list assignmentStatus="todo" title="Todo assignments"></app-assignment-list>
