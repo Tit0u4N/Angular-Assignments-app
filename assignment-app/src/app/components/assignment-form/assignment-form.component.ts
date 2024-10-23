@@ -3,6 +3,7 @@ import {FormsModule} from "@angular/forms";
 import {DatePickerComponent} from "../date-picker/date-picker.component";
 import {MatBottomSheetRef} from "@angular/material/bottom-sheet";
 import {AssignmentService} from "../../../shared/services/assignment.service";
+import {formatDate} from "../../../shared/utils";
 
 @Component({
   selector: 'app-assignment-form',
@@ -17,7 +18,7 @@ export class AssignmentFormComponent {
   private _bottomSheetRef?;
 
   title = "";
-  date: Date = new Date()
+  date: Date = new Date();
   description = "";
 
   constructor(private assignmentService: AssignmentService) {
@@ -56,7 +57,7 @@ export class AssignmentFormComponent {
       this.assignmentService.addAssignment({
         title: this.title,
         status: "todo",
-        date: this.date,
+        date: formatDate(this.date),
         description: this.verifyDescription() ? this.description : undefined
       });
 
