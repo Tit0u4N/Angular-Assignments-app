@@ -37,8 +37,6 @@ import {LoaderComponent} from "./components/loader/loader.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  private _bottomSheet = inject(MatBottomSheet);
-
   constructor(public authService: AuthService) {
   }
 
@@ -49,7 +47,5 @@ export class AppComponent {
     this.navOpen = !this.navOpen;
   }
 
-  openNewAssignmentFormSheet() {
-    this._bottomSheet.open(AssignmentFormComponent);
-  }
+
 }
