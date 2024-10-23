@@ -11,6 +11,7 @@ import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AssignmentFormComponent} from "./components/assignment-form/assignment-form.component";
 import {AuthService} from "../shared/services/auth.service";
 import {LoaderComponent} from "./components/loader/loader.component";
+import {ToastComponent} from "./components/toast/toast.component";
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ import {LoaderComponent} from "./components/loader/loader.component";
     MatDrawer,
     AssignmentListComponent,
     MatButton,
-    LoaderComponent
+    LoaderComponent,
+    ToastComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

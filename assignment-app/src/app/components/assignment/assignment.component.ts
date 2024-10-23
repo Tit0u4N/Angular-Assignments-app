@@ -29,7 +29,7 @@ import {Assignment, AssignmentService, AssignmentStatus} from "../../../shared/s
 export class AssignmentComponent {
   protected readonly formatDate = formatDate;
   @Input() data : Assignment = {
-    id: -1,
+    _id: -1,
     title: "DEFAULT TITLE",
     status: "todo",
     date: new Date("2021-01-01"),
@@ -57,7 +57,7 @@ export class AssignmentComponent {
     } else {
       nextStatus = force ? "done" : "todo";
     }
-    this.assignmentService.setStatus(this.data.id, nextStatus);
+    this.assignmentService.setStatus(this.data._id, nextStatus);
   }
 
   isDelayed() {
