@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {AssignmentListComponent} from "../../components/assignment-list/assignment-list.component";
-import {MatFabButton} from "@angular/material/button";
+import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
 import {AssignmentFormComponent} from "../../components/assignment-form/assignment-form.component";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AuthService} from "../../../shared/services/auth.service";
@@ -12,7 +12,8 @@ import {MatIcon} from "@angular/material/icon";
   imports: [
     AssignmentListComponent,
     MatFabButton,
-    MatIcon
+    MatIcon,
+    MatMiniFabButton
   ],
   templateUrl: './assignment-listing-page.component.html',
 })
