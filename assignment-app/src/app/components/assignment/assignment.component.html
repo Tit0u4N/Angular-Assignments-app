@@ -17,9 +17,15 @@
       <button mat-flat-button (click)="toggleAssignment()">
         Toggle {{ stateToToggle }}
       </button>
-      <button mat-icon-button (click)="deleteAssignment()">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <div>
+        <button mat-icon-button (click)="openEditForm()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteAssignment()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
     </div>
 
   </div>

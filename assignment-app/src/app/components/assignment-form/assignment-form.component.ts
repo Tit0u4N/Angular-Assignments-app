@@ -1,8 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {DatePickerComponent} from "../date-picker/date-picker.component";
-import {MatBottomSheetRef} from "@angular/material/bottom-sheet";
-import {AssignmentService} from "../../../shared/services/assignment.service";
+import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from "@angular/material/bottom-sheet";
+import {Assignment, AssignmentId, AssignmentService} from "../../../shared/services/assignment.service";
 import {formatDate} from "../../../shared/utils";
 
 @Component({
@@ -17,6 +17,11 @@ import {formatDate} from "../../../shared/utils";
 export class AssignmentFormComponent {
   private _bottomSheetRef?;
 
+  @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
+    type: 'editForm' | 'createForm',
+    assignment : Assignment,
+  } = { type: 'createForm', assignment: { _id: -1, title: "", status: "todo", date: new Date(), description: "" } };
+
   title = "";
   date: Date = new Date();
   description = "";
@@ -24,6 +29,14 @@ export class AssignmentFormComponent {
   constructor(private assignmentService: AssignmentService) {
     try {
       this._bottomSheetRef = inject<MatBottomSheetRef<AssignmentFormComponent>>(MatBottomSheetRef);
+
+      console.log(this.data);
+
+      if (this.data.type === 'editForm') {
+        this.title = this.data.assignment.title;
+        this.date = new Date(this.data.assignment.date);
+        this.description = this.data.assignment.description || "";
+      }
     } catch (e) {
 
     }
@@ -54,18 +67,36 @@ export class AssignmentFormComponent {
   onSubmit() {
     if (this.verifyForm()) {
 
-      this.assignmentService.addAssignment({
-        title: this.title,
-        status: "todo",
-        date: formatDate(this.date),
-        description: this.verifyDescription() ? this.description : undefined
-      });
+      if (this.data.type === 'createForm') {
+        this.addAssignmentToService();
+      } else {
+        this.updateAssignmentToService();
+      }
 
       this.resetForm();
       this._bottomSheetRef?.dismiss();
     } else {
       alert("Please fill the form correctly");
     }
+  }
+
+  private addAssignmentToService() {
+    this.assignmentService.addAssignment({
+      title: this.title,
+      status: "todo",
+      date: formatDate(this.date),
+      description: this.verifyDescription() ? this.description : undefined
+    });
+  }
+
+  private updateAssignmentToService() {
+    this.assignmentService.updateAssignment({
+      _id: this.data.assignment._id,
+      title: this.title,
+      status: "todo",
+      date: formatDate(this.date),
+      description: this.verifyDescription() ? this.description : undefined
+    });
   }
 
   resetForm() {
