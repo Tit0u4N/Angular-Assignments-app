@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input, ProviderToken} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {
   MatExpansionPanel,
@@ -10,6 +10,8 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import { formatDate } from '../../../shared/utils';
 import {MatIcon} from "@angular/material/icon";
 import {Assignment, AssignmentService, AssignmentStatus} from "../../../shared/services/assignment.service";
+import {AssignmentFormComponent} from "../assignment-form/assignment-form.component";
+import {MatBottomSheet} from "@angular/material/bottom-sheet";
 
 @Component({
   selector: 'app-assignment',
@@ -27,6 +29,7 @@ import {Assignment, AssignmentService, AssignmentStatus} from "../../../shared/s
   templateUrl: './assignment.component.html',
 })
 export class AssignmentComponent {
+  private _bottomSheet = inject(MatBottomSheet);
   protected readonly formatDate = formatDate;
   @Input() data : Assignment = {
     _id: -1,
@@ -70,5 +73,9 @@ export class AssignmentComponent {
 
   isTodo() {
     return this.data.status === "todo";
+  }
+
+  openEditForm() {
+    this._bottomSheet.open(AssignmentFormComponent, {data: {type: 'editForm', _id: this.data._id}});
   }
 }
