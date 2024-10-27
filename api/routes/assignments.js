@@ -1,12 +1,24 @@
 let Assignment = require('../model/assignment');
 
+
+
+
 // Récupérer tous les assignments (GET)
 function getAssignments(req, res) {
-    Assignment.find((err, assignments) => {
-        if (err) {
-            res.send(err)
-        }
+    const aggregate = Assignment.aggregate();
 
+    Assignment.aggregatePaginate(aggregate, {
+        page: parseInt(req.query.page) || 1,
+        limit: parseInt(req.query.limit) || 2,
+    }, (err, assignments) => {
+        console.log(assignments);
+        if (err) {
+            res.send({
+                data: null,
+                message: 'Cannot get assignments',
+                type: 'error'
+            })
+        }
         res.send({
             data: assignments,
             message: 'Success',

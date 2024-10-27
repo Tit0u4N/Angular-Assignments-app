@@ -1,11 +1,35 @@
 <h2 class="text-2xl mt-2">All assignment</h2>
+<div class="flex items-center">
+  <p>Sort : </p>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedSort">
+    @for (option of sortOptions; track option.value) {
+      <mat-radio-button [value]="option.value">{{ option.label }}</mat-radio-button>
+    }
+  </mat-radio-group>
+</div>
+
+
 <div class="relative h-0 w-full flex items-center justify-end">
   <button color="#FFFFFF" mat-mini-fab (click)="openNewAssignmentFormSheet()">
     <mat-icon>add</mat-icon>
   </button>
 </div>
-<div class="flex flex-col gap-4">
-  <app-assignment-list assignmentStatus="delayed" title="Delayed assignments"></app-assignment-list>
-  <app-assignment-list assignmentStatus="todo" title="Todo assignments"></app-assignment-list>
-  <app-assignment-list assignmentStatus="done" title="Done assignments"></app-assignment-list>
-</div>
+
+@if (selectedSort === 'all') {
+  <app-assignment-list></app-assignment-list>
+} @else {
+  <div class="flex flex-col gap-4">
+    <app-assignment-list assignmentStatus="delayed" title="Delayed assignments"></app-assignment-list>
+    <app-assignment-list assignmentStatus="todo" title="Todo assignments"></app-assignment-list>
+    <app-assignment-list assignmentStatus="done" title="Done assignments"></app-assignment-list>
+  </div>
+}
+<mat-paginator
+  (page)="handlePageEvent($event)"
+  [pageSize]="meta.limit"
+  [length]="meta.totalDocs"
+  [pageIndex]="meta.page - 1"
+  [pageSizeOptions]="[2, 5, 10]"
+  aria-label="Select page">
+</mat-paginator>
+
