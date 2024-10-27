@@ -12,14 +12,14 @@ import {Assignment, AssignmentService} from "../../../shared/services/assignment
 })
 export class AssignmentListComponent implements OnInit{
   @Input() title: string = "Assignments";
-  @Input() assignmentStatus: 'done' | 'todo' | 'delayed' = 'todo';
+  @Input() assignmentStatus: 'done' | 'todo' | 'delayed' | 'all' = 'all';
   assignments: Assignment[] = [];
 
   constructor(private assignmentService: AssignmentService) {}
 
   ngOnInit() {
     this.assignmentService.assignments$.subscribe(() => {
-      this.assignments = this.assignmentService.getAssignmentByStatus(this.assignmentStatus);
+      this.assignments = this.assignmentService.getAssignment({status : this.assignmentStatus});
     });
   }
 }

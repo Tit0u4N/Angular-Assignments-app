@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {LoaderService} from "./loader.service";
 import {ToastService, ToastType} from "./toast.service";
+import {data} from "autoprefixer";
 
 type ExternalActionResponse<T> = {
   data: T,
@@ -25,26 +26,73 @@ export type Assignment = AssignmentData & {
   _id: AssignmentId
 }
 
+export type Meta = {
+  totalDocs: number,
+  limit: number,
+  page: number,
+  totalPages: number,
+  pagingCounter: number,
+  hasPrevPage: boolean,
+  hasNextPage: boolean,
+  prevPage?: null,
+  nextPage?: null
+}
+
+const DEFAULT_META: Meta = {
+  totalDocs: 0,
+  limit: 0,
+  page: 0,
+  totalPages: 0,
+  pagingCounter: 0,
+  hasPrevPage: false,
+  hasNextPage: false,
+  prevPage: null,
+  nextPage: null
+}
+
+export type AssignmentAPIResponse = Meta & {
+  docs: Assignment[],
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentService {
   private API_URL = 'http://localhost:8010/api/assignments';
   private assignmentsSubject = new BehaviorSubject<Assignment[]>([]);
+  private metaSubject = new BehaviorSubject<Meta>(DEFAULT_META);
   assignments$ = this.assignmentsSubject.asObservable();
+  meta$: Observable<Meta> = this.metaSubject.asObservable();
 
   constructor(private http: HttpClient, private loaderService: LoaderService, private toastService: ToastService) {
     this.fetchAssignments();
   }
 
-  private fetchAssignments() {
-    return this.http.get<ExternalActionResponse<Assignment[]>>(this.API_URL).subscribe(res => {
-      this.assignmentsSubject.next(res.data);
+  fetchAssignments(options : {page :number, limit: number} = {page: 1, limit: 5}) {
+    return this.http.get<ExternalActionResponse<AssignmentAPIResponse>>(this.API_URL + `?page=${options.page}&limit=${options.limit}`).subscribe(res => {
+      this.metaSubject.next({
+        totalDocs: res.data.totalDocs,
+        limit: res.data.limit,
+        page: res.data.page,
+        totalPages: res.data.totalPages,
+        pagingCounter: res.data.pagingCounter,
+        hasPrevPage: res.data.hasPrevPage,
+        hasNextPage: res.data.hasNextPage,
+        prevPage: res.data.prevPage,
+        nextPage: res.data.nextPage
+      });
+      this.assignmentsSubject.next(res.data.docs);
     });
   }
 
-  getAssignmentByStatus(status: AssignmentStatus) {
-    return this.assignmentsSubject.value.filter(assignment => assignment.status === status);
+  getAssignment(options: { status: AssignmentStatus | 'all' }) {
+    const DEFAULT_OPTIONS = {status: 'all'};
+    options = {...DEFAULT_OPTIONS, ...options};
+    if (options.status === 'all') {
+      return this.assignmentsSubject.value;
+    }
+    return this.assignmentsSubject.value.filter(assignment => assignment.status === options.status);
   }
 
   private handleChange<T>(observable: Observable<ExternalActionResponse<T>>) {
