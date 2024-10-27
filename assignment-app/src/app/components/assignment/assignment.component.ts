@@ -76,6 +76,6 @@ export class AssignmentComponent {
   }
 
   openEditForm() {
-    this._bottomSheet.open(AssignmentFormComponent, {data: {type: 'editForm', _id: this.data._id}});
+    this._bottomSheet.open(AssignmentFormComponent, {data: {type: 'editForm', assignment: this.data}});
   }
 }
