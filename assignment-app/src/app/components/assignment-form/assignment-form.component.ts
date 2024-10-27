@@ -5,6 +5,16 @@ import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from "@angular/material/bottom
 import {Assignment, AssignmentId, AssignmentService} from "../../../shared/services/assignment.service";
 import {formatDate} from "../../../shared/utils";
 
+export type AssignmentFormInjectedData = {
+  type: 'editForm' | 'createForm',
+  assignment: Assignment
+}
+
+const DEFAULT_INJECTED_DATA : AssignmentFormInjectedData = {
+  type: 'createForm',
+  assignment: {_id: -1, title: "", status: "todo", date: new Date(), description: ""}
+}
+
 @Component({
   selector: 'app-assignment-form',
   standalone: true,
@@ -15,30 +25,41 @@ import {formatDate} from "../../../shared/utils";
   templateUrl: './assignment-form.component.html',
 })
 export class AssignmentFormComponent {
-  private _bottomSheetRef?;
+  private _bottomSheetRef : MatBottomSheetRef<AssignmentFormComponent> | undefined;
 
-  @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
-    type: 'editForm' | 'createForm',
-    assignment : Assignment,
-  } = { type: 'createForm', assignment: { _id: -1, title: "", status: "todo", date: new Date(), description: "" } };
-
+  private assignmentId: AssignmentId = -1;
   title = "";
   date: Date = new Date();
   description = "";
 
+  formType!: 'editForm' | 'createForm';
+
   constructor(private assignmentService: AssignmentService) {
+    this.initBottomSheetRef();
+    this.initInjectedData();
+  }
+
+  private initBottomSheetRef() {
     try {
       this._bottomSheetRef = inject<MatBottomSheetRef<AssignmentFormComponent>>(MatBottomSheetRef);
-
-      console.log(this.data);
-
-      if (this.data.type === 'editForm') {
-        this.title = this.data.assignment.title;
-        this.date = new Date(this.data.assignment.date);
-        this.description = this.data.assignment.description || "";
-      }
     } catch (e) {
 
+    }
+  }
+
+  private initInjectedData() {
+    try {
+      const injectedData = inject<AssignmentFormInjectedData>(MAT_BOTTOM_SHEET_DATA);
+      if (injectedData.type === 'editForm') {
+        this.assignmentId = injectedData.assignment._id;
+        this.title = injectedData.assignment.title;
+        this.date = new Date(injectedData.assignment.date);
+        this.description = injectedData.assignment.description || "";
+
+        this.formType = 'editForm';
+      }
+    } catch (e) {
+      this.formType = 'createForm';
     }
   }
 
@@ -66,8 +87,7 @@ export class AssignmentFormComponent {
 
   onSubmit() {
     if (this.verifyForm()) {
-
-      if (this.data.type === 'createForm') {
+      if (this.formType === 'createForm') {
         this.addAssignmentToService();
       } else {
         this.updateAssignmentToService();
@@ -91,7 +111,7 @@ export class AssignmentFormComponent {
 
   private updateAssignmentToService() {
     this.assignmentService.updateAssignment({
-      _id: this.data.assignment._id,
+      _id: this.assignmentId,
       title: this.title,
       status: "todo",
       date: formatDate(this.date),
