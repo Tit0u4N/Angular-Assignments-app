@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {LoaderService} from "./loader.service";
 import {ToastService, ToastType} from "./toast.service";
 import {data} from "autoprefixer";
+import {environment} from "../../environments/environment";
 
 type ExternalActionResponse<T> = {
   data: T,
@@ -59,7 +60,7 @@ export type AssignmentAPIResponse = Meta & {
   providedIn: 'root'
 })
 export class AssignmentService {
-  private URL = process.env['NODE_ENV'] === 'production' ? 'https://angular-tit0u4n-server.onrender.com/api' : 'http://localhost:8010/api';
+  private URL = environment.apiURL
   private END_POINT = `${this.URL}/assignments`;
   private assignmentsSubject = new BehaviorSubject<Assignment[]>([]);
   private metaSubject = new BehaviorSubject<Meta>(DEFAULT_META);
