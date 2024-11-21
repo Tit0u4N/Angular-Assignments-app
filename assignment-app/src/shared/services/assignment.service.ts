@@ -59,7 +59,8 @@ export type AssignmentAPIResponse = Meta & {
   providedIn: 'root'
 })
 export class AssignmentService {
-  private API_URL = 'http://localhost:8010/api/assignments';
+  private URL = process.env['NODE_ENV'] === 'production' ? 'https://angular-tit0u4n-server.onrender.com/api' : 'http://localhost:8010/api';
+  private END_POINT = `${this.URL}/assignments`;
   private assignmentsSubject = new BehaviorSubject<Assignment[]>([]);
   private metaSubject = new BehaviorSubject<Meta>(DEFAULT_META);
   assignments$ = this.assignmentsSubject.asObservable();
@@ -69,8 +70,8 @@ export class AssignmentService {
     this.fetchAssignments();
   }
 
-  fetchAssignments(options : {page :number, limit: number} = {page: 1, limit: 5}) {
-    return this.http.get<ExternalActionResponse<AssignmentAPIResponse>>(this.API_URL + `?page=${options.page}&limit=${options.limit}`).subscribe(res => {
+  fetchAssignments(options: { page: number, limit: number } = {page: 1, limit: 5}) {
+    return this.http.get<ExternalActionResponse<AssignmentAPIResponse>>(this.END_POINT + `?page=${options.page}&limit=${options.limit}`).subscribe(res => {
       this.metaSubject.next({
         totalDocs: res.data.totalDocs,
         limit: res.data.limit,
@@ -104,15 +105,15 @@ export class AssignmentService {
   }
 
   addAssignment(assignment: AssignmentData) {
-    this.handleChange(this.http.post<ExternalActionResponse<Assignment>>(this.API_URL, assignment));
+    this.handleChange(this.http.post<ExternalActionResponse<Assignment>>(this.END_POINT, assignment));
   }
 
   removeAssignment(assignmentToRemove: Assignment) {
-    this.handleChange(this.http.delete<ExternalActionResponse<Assignment>>(`${this.API_URL}/${assignmentToRemove._id}`));
+    this.handleChange(this.http.delete<ExternalActionResponse<Assignment>>(`${this.END_POINT}/${assignmentToRemove._id}`));
   }
 
   updateAssignment(assignment: Assignment) {
-    this.handleChange(this.http.put<ExternalActionResponse<Assignment>>(`${this.API_URL}`, assignment));
+    this.handleChange(this.http.put<ExternalActionResponse<Assignment>>(`${this.END_POINT}`, assignment));
   }
 
   setStatus(id: AssignmentId, status: AssignmentStatus) {
