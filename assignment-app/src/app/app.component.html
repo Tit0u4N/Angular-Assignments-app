@@ -17,9 +17,6 @@
     <div class="w-1/3 text-center">
       <h1 class="!text-4xl">{{ title }}</h1>
     </div>
-    <div class="w-1/3">
-
-    </div>
   </mat-toolbar>
   <mat-drawer-container class="bg-none h-full">
     <mat-drawer mode="side" [opened]="navOpen" class="!shadow-basic">
@@ -29,6 +26,9 @@
             <a routerLink="/" routerLinkActive="active">Home</a>
             <a routerLink="/assignments" >Assignments list</a>
             <a routerLink="/new-assignment" >Add Assignments page</a>
+            @if (authService.isAdmin) {
+              <a routerLink="/admin-panel" >Admin panel</a>
+            }
           </div>
           <button mat-raised-button (click)="logout()">
             Logout

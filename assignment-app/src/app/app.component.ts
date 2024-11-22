@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AssignmentComponent} from "./components/assignment/assignment.component";
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -7,7 +7,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from "@angular/material/sidenav";
 import {MatAccordion} from "@angular/material/expansion";
 import {AssignmentListComponent} from "./components/assignment-list/assignment-list.component";
-import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AssignmentFormComponent} from "./components/assignment-form/assignment-form.component";
 import {AuthService} from "../shared/services/auth.service";
 import {LoaderComponent} from "./components/loader/loader.component";
@@ -50,12 +49,6 @@ export class AppComponent {
   }
 
   async logout() {
-    this.toggleNav(false);
-    const isLoggedOut = await this.authService.logout()
-    if (isLoggedOut) {
-      await this.rooter.navigate(['/login']);
-    } else {
-      this.toggleNav(true)
-    }
+    await this.authService.logout()
   }
 }

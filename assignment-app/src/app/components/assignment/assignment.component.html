@@ -1,6 +1,6 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>
+    <mat-panel-title class="!flex-grow-[3]">
       <h4 class="text-xl" [ngClass]="{'text-red-500' : isDelayed(), 'text-sky-400' : isTodo()}">{{ data.title }}</h4>
     </mat-panel-title>
     <mat-panel-description>{{ formatDate(data.date) }}</mat-panel-description>
