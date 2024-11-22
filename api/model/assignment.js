@@ -6,6 +6,7 @@ const AssignmentSchema = Schema({
     id: Number,
     date: Date,
     title: String,
+    description: String,
     status: String
 });
 
