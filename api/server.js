@@ -55,6 +55,12 @@ app.route(prefix + '/assignments')
   .post(assignment.postAssignment)
   .put(assignment.updateAssignment);
 
+app.route(prefix + '/assignments/createRandom')
+  .post(assignment.createAssignments);
+
+app.route(prefix + '/assignmentsAll')
+  .delete(assignment.deleteAllAssignments);
+
 // On démarre le serveur
 app.listen(port, "0.0.0.0");
 console.log('Serveur démarré sur http://localhost:' + port);

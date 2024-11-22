@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {LoaderService} from "./loader.service";
 import {ToastService, ToastType} from "./toast.service";
-import {data} from "autoprefixer";
 import {environment} from "../../environments/environment";
 
 type ExternalActionResponse<T> = {
@@ -123,5 +122,13 @@ export class AssignmentService {
       updatedAssignment.status = status;
       this.updateAssignment(updatedAssignment);
     }
+  }
+
+  createAssignments(nbAssignmentsToCreate: number) {
+    this.handleChange(this.http.post<ExternalActionResponse<Assignment>>(`${this.END_POINT}/createRandom`, {nbAssignmentsToCreate}));
+  }
+
+  deleteAllAssignments() {
+    this.handleChange(this.http.delete<ExternalActionResponse<Assignment>>(`${this.END_POINT}All`));
   }
 }

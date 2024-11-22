@@ -1,6 +1,5 @@
 let Assignment = require('../model/assignment');
 
-
 // Récupérer tous les assignments (GET)
 function getAssignments(req, res) {
     const aggregate = Assignment.aggregate();
@@ -102,4 +101,51 @@ function deleteAssignment(req, res) {
     })
 }
 
-module.exports = {getAssignments, postAssignment, getAssignment, updateAssignment, deleteAssignment};
+function generateAssignments(number) {
+    const baseId = new Date().toLocaleDateString().replace(/\//g, '-');
+    const mockAssignments = require('../mockAssignments.js')
+    return mockAssignments.slice(0, number).map(a => {
+        a.id = `${baseId}-${a.id}`;
+        return a;
+    });
+}
+
+
+function createAssignments(req, res) {
+    const assignments = generateAssignments(req.body.nbAssignmentsToCreate);
+
+    Assignment.insertMany(assignments, (err, assignments) => {
+        if (err) {
+            console.log(err)
+            res.send({
+                data: null,
+                message: 'Cannot save the assignments',
+                type: 'error'
+            });
+        }
+        res.json({
+            data: assignments,
+            message: req.body.nbAssignmentsToCreate + ' Assignments saved!',
+            type: 'success'
+        })
+    })
+}
+
+function deleteAllAssignments(req, res) {
+    Assignment.deleteMany({}, (err) => {
+        if (err) {
+            res.send({
+                data: null,
+                message: 'Cannot delete the assignments',
+                type: 'error'
+            });
+        }
+        res.json({
+            data: [],
+            message: 'Assignments deleted',
+            type: 'success'
+        });
+    })
+}
+
+module.exports = {getAssignments, postAssignment, getAssignment, updateAssignment, deleteAssignment, createAssignments, deleteAllAssignments};
