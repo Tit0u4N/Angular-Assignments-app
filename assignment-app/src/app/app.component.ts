@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AssignmentComponent} from "./components/assignment/assignment.component";
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIcon} from "@angular/material/icon";
@@ -39,15 +39,23 @@ import {ToastComponent} from "./components/toast/toast.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(public authService: AuthService) {
+  constructor(public readonly authService: AuthService, private readonly rooter: Router) {
   }
 
   navOpen: boolean = false;
   title = 'assignment-app';
 
-  toggleNav() {
-    this.navOpen = !this.navOpen;
+  toggleNav(force?: boolean) {
+    this.navOpen = force !== undefined ? force : !this.navOpen;
   }
 
-
+  async logout() {
+    this.toggleNav(false);
+    const isLoggedOut = await this.authService.logout()
+    if (isLoggedOut) {
+      await this.rooter.navigate(['/login']);
+    } else {
+      this.toggleNav(true)
+    }
+  }
 }
