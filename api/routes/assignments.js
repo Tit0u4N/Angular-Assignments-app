@@ -1,8 +1,6 @@
 let Assignment = require('../model/assignment');
 
 
-
-
 // Récupérer tous les assignments (GET)
 function getAssignments(req, res) {
     const aggregate = Assignment.aggregate();
@@ -11,7 +9,6 @@ function getAssignments(req, res) {
         page: parseInt(req.query.page) || 1,
         limit: parseInt(req.query.limit) || 2,
     }, (err, assignments) => {
-        console.log(assignments);
         if (err) {
             res.send({
                 data: null,
@@ -30,7 +27,6 @@ function getAssignments(req, res) {
 // Récupérer un assignment par son id (GET)
 function getAssignment(req, res) {
     let assignmentId = req.params.id;
-
     Assignment.findOne({id: assignmentId}, (err, assignment) => {
         if (err) {
             res.send(err)
@@ -51,9 +47,6 @@ function postAssignment(req, res) {
     assignment.date = req.body.date;
     assignment.status = req.body.status;
 
-    console.log("POST assignment reçu :");
-    console.log(assignment)
-
     assignment.save((err) => {
         if (err) {
             res.send({
@@ -72,8 +65,6 @@ function postAssignment(req, res) {
 
 // Update d'un assignment (PUT)
 function updateAssignment(req, res) {
-    console.log("UPDATE recu assignment : ");
-    console.log(req.body);
     Assignment.findByIdAndUpdate(req.body._id, req.body, {new: true}, (err, assignment) => {
         if (err) {
             console.log(err);
@@ -95,7 +86,6 @@ function updateAssignment(req, res) {
 
 // suppression d'un assignment (DELETE)
 function deleteAssignment(req, res) {
-    console.log(req.params.id)
     Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
         if (err) {
             res.send({
