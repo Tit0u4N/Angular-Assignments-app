@@ -32,7 +32,7 @@ export class AssignmentFormComponent {
   date: Date = new Date();
   description = "";
 
-  formType!: 'editForm' | 'createForm';
+  private formType!: 'editForm' | 'createForm';
 
   constructor(private assignmentService: AssignmentService) {
     this.initBottomSheetRef();
@@ -122,6 +122,10 @@ export class AssignmentFormComponent {
   resetForm() {
     this.title = "";
     this.date = new Date();
+  }
+
+  get isEdit() {
+    return this.formType === 'editForm';
   }
 
 

@@ -3,6 +3,7 @@ import {AuthService} from "../../../shared/services/auth.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,8 @@ import {MatButton} from "@angular/material/button";
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatButton
+    MatButton,
+    NgOptimizedImage
   ],
   templateUrl: './home.component.html',
 })
