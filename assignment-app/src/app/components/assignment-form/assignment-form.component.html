@@ -17,6 +17,12 @@
               placeholder="Assigment description"
               class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium cursor-pointer"
     ></textarea>
-    <button class="bg-blue-500 text-white rounded-md px-2 py-1 mt-4">Create</button>
+    <button class="bg-blue-500 text-white rounded-md px-2 py-1 mt-4">
+      @if (isEdit) {
+        Update
+      } @else {
+        Create
+      }
+    </button>
   </form>
 </div>

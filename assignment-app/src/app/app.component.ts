@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AssignmentComponent} from "./components/assignment/assignment.component";
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIcon} from "@angular/material/icon";
@@ -38,7 +38,7 @@ import {ToastComponent} from "./components/toast/toast.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(public readonly authService: AuthService, private readonly rooter: Router) {
+  constructor(public readonly authService: AuthService) {
   }
 
   navOpen: boolean = false;
