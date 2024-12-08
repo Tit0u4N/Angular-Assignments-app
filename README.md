@@ -37,7 +37,7 @@ Starter repository for Angular lab assignments.
 
 ### Authentication
 
-- Three levels of authentication:
+- Three levels of authentication (Guards & Routes):
     - Unauthenticated users
     - Authenticated users
     - Administrators
