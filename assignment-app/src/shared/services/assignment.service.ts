@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {LoaderService} from "./loader.service";
 import {ToastService, ToastType} from "./toast.service";
 import {environment} from "../../environments/environment";
+import {LoggingService} from "./logging.service";
 
 type ExternalActionResponse<T> = {
   data: T,
@@ -66,11 +67,12 @@ export class AssignmentService {
   assignments$ = this.assignmentsSubject.asObservable();
   meta$: Observable<Meta> = this.metaSubject.asObservable();
 
-  constructor(private http: HttpClient, private loaderService: LoaderService, private toastService: ToastService) {
+  constructor(private http: HttpClient, private loaderService: LoaderService, private toastService: ToastService, private loggingService: LoggingService) {
     this.fetchAssignments();
   }
 
   fetchAssignments(options: { page: number, limit: number } = {page: 1, limit: 5}) {
+    this.loggingService.log(`Fetching assignments: page ${options.page}, limit ${options.limit}`, {type: 'fetch'});
     return this.http.get<ExternalActionResponse<AssignmentAPIResponse>>(this.END_POINT + `?page=${options.page}&limit=${options.limit}`).subscribe(res => {
       this.metaSubject.next({
         totalDocs: res.data.totalDocs,
@@ -100,23 +102,28 @@ export class AssignmentService {
     this.loaderService.show();
     return observable.subscribe(res => {
       this.fetchAssignments().add(() => this.loaderService.hide());
+      this.loggingService.log(res.message, {type: 'fetch'});
       this.toastService.show(res.message, res.type);
     });
   }
 
   addAssignment(assignment: AssignmentData) {
+    this.loggingService.log(`Adding assignment: ${assignment.title}`);
     this.handleChange(this.http.post<ExternalActionResponse<Assignment>>(this.END_POINT, assignment));
   }
 
   removeAssignment(assignmentToRemove: Assignment) {
+    this.loggingService.log(`Removing assignment: ${assignmentToRemove.title}`);
     this.handleChange(this.http.delete<ExternalActionResponse<Assignment>>(`${this.END_POINT}/${assignmentToRemove._id}`));
   }
 
   updateAssignment(assignment: Assignment) {
+    this.loggingService.log(`Updating assignment: ${assignment.title}`);
     this.handleChange(this.http.put<ExternalActionResponse<Assignment>>(`${this.END_POINT}`, assignment));
   }
 
   setStatus(id: AssignmentId, status: AssignmentStatus) {
+    this.loggingService.log(`Setting status of assignment: ${id} to ${status}`);
     const updatedAssignment = this.assignmentsSubject.value.find(assignment => assignment._id === id);
     if (updatedAssignment) {
       updatedAssignment.status = status;
@@ -125,10 +132,12 @@ export class AssignmentService {
   }
 
   createAssignments(nbAssignmentsToCreate: number) {
+    this.loggingService.log(`Creating ${nbAssignmentsToCreate} assignments`);
     this.handleChange(this.http.post<ExternalActionResponse<Assignment>>(`${this.END_POINT}/createRandom`, {nbAssignmentsToCreate}));
   }
 
   deleteAllAssignments() {
+    this.loggingService.log(`Deleting all assignments`);
     this.handleChange(this.http.delete<ExternalActionResponse<Assignment>>(`${this.END_POINT}All`));
   }
 }
