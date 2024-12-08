@@ -59,6 +59,12 @@ Starter repository for Angular lab assignments.
     - View logs for system events.
     - Delete logs when no longer needed.
 
+### Other Features
+- Loading indicators for asynchronous operations.
+- Toast notifications for user feedback.
+- Filter assignments by status.
+- Pagination for assignment list.
+
 ## Technical Details
 
 ### Technologies
@@ -83,4 +89,4 @@ backend.
 ### Deployment
 The frontend and the backend are deployed on [Render](https://render.com). When a new commit is pushed to the main branch, the application is automatically deployed.
 
-For the first connection to the frontend you need to wait 30s / 1min for the backend to be up and running.
+For the first connection to the frontend you need to wait 30s / 1min for frontend and the backend to be up and running.

@@ -11,7 +11,6 @@ interface Log {
   message: string
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +21,7 @@ export class LoggingService {
   constructor(private AuthService: AuthService) { }
 
   log(message: string, options?: {level?: LogLevel, type?: LogType, verbal?: boolean}) {
-    this.testIfAdmin();
+    if (!this.AuthService.isAdmin) return;
     const level = options?.level || 'info';
     const type = options?.type || 'other';
     const log = {message, level, type, timestamp: new Date()};
@@ -33,28 +32,21 @@ export class LoggingService {
   }
 
   getLogs() {
-    this.testIfAdmin();
+    if (!this.AuthService.isAdmin) return;
     if (!this.AuthService.isAdmin) return;
     return this.logs;
   }
 
   clearLogs() {
-    this.testIfAdmin()
+    if (!this.AuthService.isAdmin) return;
     this.log('Logs cleared', {type: 'admin'});
     this.logs = [];
   }
 
   setVerbalLogs(value: boolean) {
-    this.testIfAdmin();
+    if (!this.AuthService.isAdmin) return;
     this.log(`Verbal logs are now ${value ? 'enabled' : 'disabled'}`, {type: 'admin'});
     this.verbalLogs = value;
-  }
-
-  private testIfAdmin() {
-    if (!this.AuthService.isAdmin) {
-      this.log('User is not an admin', {type: 'auth', level: 'error'});
-      throw new Error('User is not an admin');
-    }
   }
 
   private logVerbal(log: Log) {

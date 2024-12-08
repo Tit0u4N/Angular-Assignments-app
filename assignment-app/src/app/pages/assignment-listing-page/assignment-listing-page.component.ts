@@ -3,7 +3,6 @@ import {AssignmentListComponent} from "../../components/assignment-list/assignme
 import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
 import {AssignmentFormComponent} from "../../components/assignment-form/assignment-form.component";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
-import {AuthService} from "../../../shared/services/auth.service";
 import {MatIcon} from "@angular/material/icon";
 import { TwSelectModule } from 'ng-tw';
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
@@ -44,8 +43,6 @@ export class AssignmentListingPageComponent {
     prevPage: null,
     nextPage: null
   }
-
-  // public pageEvent: PageEvent;
 
   constructor(private assignmentService: AssignmentService) {
     this.assignmentService.meta$.subscribe(meta => {
